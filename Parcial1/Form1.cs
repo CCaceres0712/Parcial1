@@ -27,6 +27,7 @@ namespace Parcial1
         int pd1 = 0;
         Boolean p2 = false;
         int pd2 = 0;
+        int f = 0;
         public Form1()
         {
             InitializeComponent();
@@ -236,6 +237,20 @@ namespace Parcial1
             }
         }
 
+        void dev()
+        {
+            for (int i = 0; i < ps.Count; i++)
+            {
+                if(ps[i].Devolucion.CompareTo(DateTime.Now.ToString()) > 0)
+                {
+                    f++;
+                    label15.Text = "";
+                    label15.Text = f.ToString();
+                    label15.Refresh();
+                }
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
@@ -308,6 +323,7 @@ namespace Parcial1
             leerLibro();
             leerPrestamo();
             leerPrestamo2();
+            dev();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -349,6 +365,7 @@ namespace Parcial1
                             dataGridView1.DataSource = null;
                             dataGridView1.DataSource = dt;
                             dataGridView1.Refresh();
+                            dev();
                             pd = 0;
                             textBox8.Clear();
                             textBox9.Clear();
