@@ -16,6 +16,7 @@ namespace Parcial1
         List<Estudiante> est = new List<Estudiante>();
         List<Libros> lb = new List<Libros>();
         List<Prestamos> ps = new List<Prestamos>();
+        List<Datos> dt = new List<Datos>();
         Boolean l = false;
         int ls = 0;
         Boolean es = false;
@@ -121,6 +122,41 @@ namespace Parcial1
                 d.Inicial = reader.ReadLine();
                 d.Devolucion = reader.ReadLine();
                 ps.Add(d);
+            }
+            reader.Close();
+        }
+
+        void escribirPrestamo2()
+        {
+            FileStream stream = new FileStream("datos.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter write = new StreamWriter(stream);
+            foreach (var d in dt)
+            {
+                write.WriteLine(d.Nombre);
+                write.WriteLine(d.Titulo);
+                write.WriteLine(d.Inicial);
+                write.WriteLine(d.Devolucion);
+            }
+            write.Close();
+        }
+
+        void leerPrestamo2()
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            string fileName = "datos.txt";
+            FileStream st = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(st);
+            while (reader.Peek() > -1)
+            {
+                Datos d = new Datos();
+                d.Nombre = reader.ReadLine();
+                d.Titulo = reader.ReadLine();
+                d.Inicial = reader.ReadLine();
+                d.Devolucion = reader.ReadLine();
+                dt.Add(d);
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = dt;
+                dataGridView1.Refresh();
             }
             reader.Close();
         }
@@ -271,6 +307,7 @@ namespace Parcial1
             leerEstudiante();
             leerLibro();
             leerPrestamo();
+            leerPrestamo2();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -278,6 +315,7 @@ namespace Parcial1
             if(!string.IsNullOrEmpty(textBox8.Text) && !string.IsNullOrEmpty(textBox9.Text))
             {
                 Prestamos d = new Prestamos();
+                Datos D = new Datos();
                 d.Codigo = textBox9.Text;
                 repetidosPrestamos2();
                 leerLibro();
@@ -298,11 +336,19 @@ namespace Parcial1
                         }
                         else
                         {
-                            
                             d.Inicial = dateTimePicker1.Value.ToString();
                             d.Devolucion = dateTimePicker2.Value.ToString();
+                            D.Nombre = est[pd2].Nombre;
+                            D.Titulo = lb[pd1].Titulo;
+                            D.Inicial = dateTimePicker1.Value.ToString();
+                            D.Devolucion = dateTimePicker2.Value.ToString();
                             ps.Add(d);
                             escribirPrestamo();
+                            dt.Add(D);
+                            escribirPrestamo2();
+                            dataGridView1.DataSource = null;
+                            dataGridView1.DataSource = dt;
+                            dataGridView1.Refresh();
                             pd = 0;
                             textBox8.Clear();
                             textBox9.Clear();
